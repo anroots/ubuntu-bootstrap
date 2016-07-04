@@ -1,0 +1,26 @@
+- name: Add Sublime PPA
+  apt_repository: repo='ppa:webupd8team/sublime-text-3' mode=664
+
+- name: Install Sublime
+  apt: name=sublime-text-installer state=present update_cache=yes
+
+
+- name: Install packages
+  apt: name={{item}} state=present
+  with_items:
+    - bridge-utils
+    - build-essential
+    - cmake
+    - dconf-editor
+    - diodon
+    - git
+    - httpie
+    - jq
+    - nmap
+    - wireshark
+    - default-jdk
+    - python-dev
+    - libsqlite3-dev
+    - php
+    - python3
+

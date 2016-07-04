@@ -1,0 +1,101 @@
+- name: Upgrade packages
+  apt: upgrade=full update_cache=yes cache_valid_time=3600
+
+- name: Install Spotify repo key
+  apt_key: keyserver=keyserver.ubuntu.com id=BBEBDCB318AD50EC6865090613B00F1FD2C19886
+
+- name: Add repository public keys
+  apt_key: url="{{ item }}"
+  with_items:
+    - https://installer.id.ee/media/install-scripts/ria-public.key
+    - https://installer.id.ee/media/install-scripts/C6C83D68.pub
+    - https://dl.google.com/linux/linux_signing_key.pub
+
+- name: Add repositories
+  apt_repository: repo="{{ item }}" mode="644" update_cache=no
+  with_items:
+    - deb https://installer.id.ee/media/ubuntu {{ ansible_distribution_release }} main
+    - deb http://repository.spotify.com stable non-free
+    - ppa:fixnix/netspeed
+    - ppa:ansible/ansible
+    - deb http://dl.google.com/linux/talkplugin/deb/ stable main
+    - ppa:martin-frost/thoughtbot-rcm
+
+- name: Install packages
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - nano
+    - ack-grep
+    - apt-transport-https
+    - whois
+    - gparted
+    - guake
+    - gufw
+    - ufw
+    - dconf-editor
+    - indicator-netspeed-unity
+    - shutter
+    - rcm
+    - terminator
+    - traceroute
+    - unrar
+    - vlc
+    - whois
+    - zsh
+    - spotify-client
+    - open-eid
+    - google-talkplugin
+    - imagemagick
+    - zip
+    - unrar
+    - ubuntu-restricted-extras
+    - gnupg2
+    - pcscd
+    - opensc
+    - gpgsm
+    - gnupg-agent
+    - p7zip-full
+
+    - libreoffice-help-en-gb
+    - libreoffice-l10n-et
+    - libreoffice-l10n-en-gb
+    - libreoffice-help-et
+    - language-pack-et
+    - language-pack-gnome-et
+    - hunspell-en-gb
+    - myspell-et
+    - hunspell-en-ca
+    - firefox-locale-et
+    - hyphen-en-gb
+
+
+- name: Remove unneeded packages
+  apt: name={{ item }} state=absent
+  with_items:
+    - aisleriot
+    - gnome-mahjong
+    - gnome-mines
+    - thunderbird
+    - gnome-sudoku
+    - rhythmbox
+
+- name: Disable Apport error reporting
+  lineinfile: dest=/etc/default/apport regexp="^enabled=" line="enabled=0"
+
+- name: Create lightdm conf.d
+  file: path=/etc/lightdm/lightdm.conf.d state=directory
+
+- name: Configure lightdm login
+  copy: src=files/99-login.conf dest=/etc/lightdm/lightdm.conf.d mode=664
+
+- name: Activate firewall
+  ufw: state=enabled policy=deny
+
+- name: Create autostart directory
+  file: path="/home/{{ user_name }}/.config/autostart" state=directory
+
+- name: Autostart Shutter on login
+  copy: src=files/shutter.desktop dest="/home/{{ user_name }}/.config/autostart" mode=664
+
+- name: Autostart Guake on login
+  copy: src=files/guake.desktop dest="/home/{{ user_name }}/.config/autostart" mode=664

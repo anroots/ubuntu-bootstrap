@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=shutter
+Hidden=false
+NoDisplay=false
+X-Gnome-Autostart-enable=true
+Name[en_US]=shutter
+Name=shutter
+Icon=shutter
