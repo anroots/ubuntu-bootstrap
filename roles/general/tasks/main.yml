@@ -40,7 +40,6 @@
     - traceroute
     - unrar
     - vlc
-    - whois
     - zsh
     - spotify-client
     - open-eid
@@ -55,7 +54,7 @@
     - gpgsm
     - gnupg-agent
     - p7zip-full
-
+    - gimp
     - libreoffice-help-en-gb
     - libreoffice-l10n-et
     - libreoffice-l10n-en-gb
@@ -92,10 +91,12 @@
   ufw: state=enabled policy=deny
 
 - name: Create autostart directory
-  file: path="/home/{{ user_name }}/.config/autostart" state=directory
+  file: path="/home/{{ ansible_user }}/.config/autostart" state=directory owner="{{ ansible_user }}" group="{{ ansible_user }}"
 
-- name: Autostart Shutter on login
-  copy: src=files/shutter.desktop dest="/home/{{ user_name }}/.config/autostart" mode=664
+- name: Configure autostart applications
+  copy: src="files/{{ item }}" dest="/home/{{ ansible_user }}/.config/autostart" mode=664 owner="{{ ansible_user }}" group="{{ ansible_user }}"
+  with_items:
+    - shutter.desktop
+    - guake.desktop
+    - gnome-keyring-ssh.desktop
 
-- name: Autostart Guake on login
-  copy: src=files/guake.desktop dest="/home/{{ user_name }}/.config/autostart" mode=664

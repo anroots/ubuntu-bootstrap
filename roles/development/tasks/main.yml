@@ -23,4 +23,17 @@
     - libsqlite3-dev
     - php
     - python3
+    - rubygems
+    - ruby-dev
+    - bundler
 
+- name: Install Ruby gems
+  gem: name={{item}}
+  with_items:
+    - jekyll
+
+- name: Install Python packages
+  pip: name={{item}}
+  with_items:
+    - stormssh
+    - js-yaml

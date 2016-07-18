@@ -5,6 +5,11 @@
     - development
     - angstwad.docker_ubuntu
     - cmprescott.chrome
+    - geerlingguy.nodejs
   vars:
-    user_name: ando
+    ansible_user: ando
     docker_group_members: ando
+    nodejs_version: "6.x"
+    nodejs_npm_global_packages:
+      - name: jslint
+      - name: bower
