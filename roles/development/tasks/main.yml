@@ -26,6 +26,7 @@
     - rubygems
     - ruby-dev
     - bundler
+    - zlib1g-dev
 
 - name: Install Ruby gems
   gem: name={{item}}
