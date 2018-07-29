@@ -4,7 +4,6 @@
     - general
     - development
     - angstwad.docker_ubuntu
-    - cmprescott.chrome
     - geerlingguy.nodejs
   vars:
     ansible_user: ando
